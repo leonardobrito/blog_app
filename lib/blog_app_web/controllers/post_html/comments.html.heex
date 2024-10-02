@@ -1,0 +1,6 @@
+<h3>Comments:</h3>
+
+<.table id="comments" rows={@comments}>
+  <:col :let={comment} label="Name"><%= comment.name %></:col>
+  <:col :let={comment} label="Content"><%= comment.content %></:col>
+</.table>
