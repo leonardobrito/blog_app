@@ -23,11 +23,14 @@ defmodule BlogApp.PmsFixtures do
   Generate a comment.
   """
   def comment_fixture(attrs \\ %{}) do
+    post = post_fixture()
+
     {:ok, comment} =
       attrs
       |> Enum.into(%{
         content: "some content",
-        name: "some name"
+        name: "some name",
+        post_id: post.id
       })
       |> BlogApp.Pms.create_comment()
 

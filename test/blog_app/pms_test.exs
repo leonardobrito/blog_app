@@ -77,11 +77,13 @@ defmodule BlogApp.PmsTest do
     end
 
     test "create_comment/1 with valid data creates a comment" do
-      valid_attrs = %{name: "some name", content: "some content"}
+      post = post_fixture()
+      valid_attrs = %{name: "some name", content: "some content", post_id: post.id}
 
       assert {:ok, %Comment{} = comment} = Pms.create_comment(valid_attrs)
       assert comment.name == "some name"
       assert comment.content == "some content"
+      assert comment.post_id == post.id
     end
 
     test "create_comment/1 with invalid data returns error changeset" do

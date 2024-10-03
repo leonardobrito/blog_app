@@ -86,8 +86,4 @@ defmodule BlogAppWeb.PostController do
         |> redirect(to: ~p"/posts/#{post}")
     end
   end
-
-  def get_comments_count(post_id) do
-    Pms.get_number_of_comments(post_id)
-  end
 end

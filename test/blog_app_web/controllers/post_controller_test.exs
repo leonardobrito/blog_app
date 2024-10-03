@@ -7,6 +7,9 @@ defmodule BlogAppWeb.PostControllerTest do
   @update_attrs %{title: "some updated title", body: "some updated body"}
   @invalid_attrs %{title: nil, body: nil}
 
+  @create_comment_attrs %{name: "some name", content: "some content", post_id: 1}
+  @invalid_comment_attrs %{name: nil, content: nil, post_id: nil}
+
   describe "index" do
     test "lists all posts", %{conn: conn} do
       conn = get(conn, ~p"/posts")
@@ -74,6 +77,32 @@ defmodule BlogAppWeb.PostControllerTest do
       assert_error_sent 404, fn ->
         get(conn, ~p"/posts/#{post}")
       end
+    end
+  end
+
+  describe "add_comment" do
+    setup [:create_post]
+
+    test "redirects to show when data is valid", %{conn: conn, post: post} do
+      conn =
+        post(conn, ~p"/posts/#{post}/comment",
+          comment: %{@create_comment_attrs | post_id: post.id}
+        )
+
+      assert %{id: id} = redirected_params(conn)
+      assert redirected_to(conn) == ~p"/posts/#{id}"
+
+      conn = get(conn, ~p"/posts/#{id}")
+      assert html_response(conn, 200) =~ @create_comment_attrs.name
+    end
+
+    test "renders errors when data is invalid", %{conn: conn, post: post} do
+      conn = post(conn, ~p"/posts/#{post}/comment", comment: @invalid_comment_attrs)
+
+      assert %{id: id} = redirected_params(conn)
+      assert redirected_to(conn) == ~p"/posts/#{id}"
+
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) == "Oops! Couldn't add comment!"
     end
   end
 
