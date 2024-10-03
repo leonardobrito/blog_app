@@ -18,7 +18,7 @@ config :blog_app, BlogApp.Repo,
 config :blog_app, BlogAppWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "Q6cU5nGkJwuFMLvSfB6appIISYsAplEeQ2SiF2LBvc2yrQzjKm1TnSZivMToA1d3",
-  server: false
+  server: true
 
 # In test we don't send emails
 config :blog_app, BlogApp.Mailer, adapter: Swoosh.Adapters.Test
@@ -35,3 +35,9 @@ config :phoenix, :plug_init_mode, :runtime
 # Enable helpful, but potentially expensive runtime checks
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
+
+config :blog_app, :sql_sandbox, true
+
+config :wallaby,
+  chromedriver: [headless: true],
+  screenshot_on_failure: true
